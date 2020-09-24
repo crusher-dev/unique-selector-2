@@ -2,7 +2,6 @@
   // import "core-js/fn/array.find"
   // ...
 export default class UnqiueSelector {
-
   private element: HTMLElement;
   constructor(element: HTMLElement){
       this.element = element;
