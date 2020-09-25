@@ -7,7 +7,7 @@ import json from 'rollup-plugin-json'
 
 const pkg = require('./package.json')
 
-const libraryName = 'unique-selector-2'
+const libraryName = 'unique-selector'
 
 export default {
   input: `src/${libraryName}.ts`,

@@ -1,12 +1,12 @@
-interface UniqueSelectorResult{
-    uniqueSelector: String;
-    idSelector: String;
-    dataAttributeSelecor: String;
-    classSelector: String
-    valueSelector: String[];
-    attributeSelector: String[];
-    xPathSelector: String;
-    nthChildSelector: String;
-    combinations: String[];
-    tagSelector: String;
+import { SELECTOR_TYPE } from '../constants'
+
+export interface SelectorData{
+  value: String;
+  type: String;
+  uniquenessScore: Number;
+}
+
+export interface UniqueSelectorResult{
+    mostUniqueSelector: SelectorData;
+    list: SelectorData[];
 }

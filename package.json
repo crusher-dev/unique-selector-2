@@ -1,11 +1,11 @@
 {
-  "name": "unique-selector-2",
+  "name": "unique-selector",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/unique-selector-2.umd.js",
-  "module": "dist/unique-selector-2.es5.js",
-  "typings": "dist/types/unique-selector-2.d.ts",
+  "main": "dist/unique-selector.umd.js",
+  "module": "dist/unique-selector.es5.js",
+  "typings": "dist/types/unique-selector.d.ts",
   "files": [
     "dist"
   ],

@@ -1,4 +1,4 @@
-import UnqiueSelector from "../src/unique-selector-2"
+import UniqueSelector from "../src/unique-selector"
 
 /**
  * Dummy test
