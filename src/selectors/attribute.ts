@@ -3,12 +3,12 @@ import { SelectorData } from '../interface/result'
 import { Map } from '../interface/common'
 import {getQuerySelector, getUniqueScore} from "../utils"
 /**
- * Returns id, value and uniqueness of HTML node
+ * Returns attribute map, value and uniqueness of HTML node
  * @param htmlNode
  * @param target
- * @return SelectorData
+ * @return Array of SelectorData|null
  */
-export const getDataAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[]|null => {
+export const getAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[]|null => {
   const nodeName = htmlNode.nodeName;
   const attributes = htmlNode.attributes;
   const length = attributes.length
@@ -18,6 +18,10 @@ export const getDataAttribute = (htmlNode:HTMLElement, target:HTMLElement):Selec
     const attribute = attributes[i]
     const attributeName = attribute.nodeName;
     const attributeValue = attribute.nodeValue;
+
+    // Skip id, class and data-* attributes
+    if(attributeName.indexOf("data-") !== -1 || attributeName.indexOf("id") !== -1 || attributeName.indexOf("class") !== -1) continue;
+
     attributeList[attributeName]=attributeValue
   }
 

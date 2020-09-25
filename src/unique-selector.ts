@@ -2,6 +2,7 @@ import { Configuration, UserConfiguration, DefaultConfiguration } from './interf
 import {UniqueSelectorResult} from './interface/result'
 import { getIDSelectors } from './selectors/id'
 import { getDataAttribute } from './selectors/dataAttribute'
+import {getAttribute} from './selectors/attribute'
 
 /**
  * Entry File.
@@ -25,11 +26,12 @@ class UniqueSelector {
    */
    getUniqueSelector(element: HTMLElement):UniqueSelectorResult{
     const idSelector = getIDSelectors(element,this._configuration.root)
-    const getDataAttributes = getDataAttribute(element,this._configuration.root)
+    const getDataAttributesSelector = getDataAttribute(element,this._configuration.root)
+    const geAttributesSelector = getAttribute(element,this._configuration.root)
 
     return {
       mostUniqueSelector: idSelector,
-      list: [idSelector, getDataAttributes]
+      list: [idSelector, getDataAttributesSelector, geAttributesSelector]
     } as UniqueSelectorResult
    }
 }

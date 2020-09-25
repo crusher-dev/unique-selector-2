@@ -4,10 +4,10 @@ import { Map } from '../interface/common'
 import {getQuerySelector, getUniqueScore} from "../utils"
 
 /**
- * Returns id, value and uniqueness of HTML node
+ * Returns data attribute map, value and uniqueness of HTML node
  * @param htmlNode
  * @param target
- * @return SelectorData
+ * @return Array of SelectorData|null
  */
 export const getDataAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[]|null => {
   const nodeName = htmlNode.nodeName;
