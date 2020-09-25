@@ -2,7 +2,6 @@ import { SELECTOR_TYPE } from '../constants'
 import { SelectorData } from '../interface/result'
 import { Map } from '../interface/common'
 import {getQuerySelector, getUniqueScore} from "../utils"
-
 /**
  * Returns id, value and uniqueness of HTML node
  * @param htmlNode
@@ -19,9 +18,6 @@ export const getDataAttribute = (htmlNode:HTMLElement, target:HTMLElement):Selec
     const attribute = attributes[i]
     const attributeName = attribute.nodeName;
     const attributeValue = attribute.nodeValue;
-
-    // If data-id is not present, continue
-    if(attributeName.indexOf("data-") === -1) continue;
     attributeList[attributeName]=attributeValue
   }
 
@@ -33,7 +29,7 @@ export const getDataAttribute = (htmlNode:HTMLElement, target:HTMLElement):Selec
     const uniqueScore = getUniqueScore(querySelector, target);
 
     return {
-      type: SELECTOR_TYPE.DATA_ATTRIBUTE,
+      type: SELECTOR_TYPE.ATTRIBUTE,
       value: querySelector,
       uniquenessScore: uniqueScore
     }

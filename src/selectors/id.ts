@@ -1,5 +1,6 @@
 import { SELECTOR_TYPE } from '../constants'
 import { SelectorData } from '../interface/result'
+import { getUniqueScore } from '../utils'
 
 /**
  * Returns id, value and uniqueness of HTML node
@@ -11,13 +12,12 @@ export const getIDSelectors = (htmlNode:HTMLElement, target:HTMLElement):Selecto
   const elementId = htmlNode.id;
   if(!elementId) return null;
 
-  const selectorValue = `#${elementId}`;
-  const noOfElementWithSameId = target.querySelectorAll(selectorValue).length;
-  const uniquenessScore = Number((1/noOfElementWithSameId).toPrecision());
+  const querySelector = `#${elementId}`;
+  const uniquenessScore = getUniqueScore(querySelector, target);
 
   return {
     type: SELECTOR_TYPE.ID,
-    value: selectorValue,
+    value: querySelector,
     uniquenessScore
   }
 }
