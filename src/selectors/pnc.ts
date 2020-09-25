@@ -18,7 +18,7 @@ export const getPnC = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[] 
   return _.uniqBy(result, 'value')
 }
 
-const generateNDepthSelector = (htmlNode:HTMLElement, target:HTMLElement, seed:number=5, optimized:number= 10) =>{
+const generateNDepthSelector = (htmlNode:HTMLElement, target:HTMLElement, seed:number=5, optimized:number= 5) =>{
   let optimizationLevel = 2;
   const output = []
 
