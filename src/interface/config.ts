@@ -20,8 +20,7 @@ export interface Configuration{
 export const DefaultConfiguration:Configuration = {
   // @ts-ignore
   root: document,
-  findOnlyUnique: false,
-  maxDepth: 10,
-  optimizedMinLength: 3,
-  thresholdComputation: 1000
+  // maxDepth: 10,
+  // optimizedMinLength: 3,
+  // thresholdComputation: 1000
 }

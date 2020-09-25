@@ -8,7 +8,7 @@ import {getQuerySelector, getUniqueScore} from "../utils"
  * @param target
  * @return Array of SelectorData|null
  */
-export const getAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[]|null => {
+export const getAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[] => {
   const nodeName = htmlNode.nodeName;
   const attributes = htmlNode.attributes;
   const length = attributes.length
@@ -25,7 +25,7 @@ export const getAttribute = (htmlNode:HTMLElement, target:HTMLElement):SelectorD
     attributeList[attributeName]=attributeValue
   }
 
-  if(Object.keys(attributeList).length === -1 ) return null;
+  if(Object.keys(attributeList).length === -1 ) return [];
 
   return Object.keys(attributeList).map((attributeName) => {
     const attributeValue = attributeList[attributeName] as string;

@@ -8,16 +8,16 @@ import { getUniqueScore } from '../utils'
  * @param target
  * @return SelectorData
  */
-export const getIDSelectors = (htmlNode:HTMLElement, target:HTMLElement):SelectorData | null => {
+export const getIDSelectors = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[] => {
   const elementId = htmlNode.id;
-  if(!elementId) return null;
+  if(!elementId) return [];
 
   const querySelector = `#${elementId}`;
   const uniquenessScore = getUniqueScore(querySelector, target);
 
-  return {
+  return [{
     type: SELECTOR_TYPE.ID,
     value: querySelector,
     uniquenessScore
-  }
+  }]
 }
