@@ -1,6 +1,6 @@
 {
   "name": "unique-selector-2",
-  "version": "0.0.0-development",
+  "version": "0.0.3-development",
   "description": "",
   "keywords": [],
   "main": "dist/unique-selector.umd.js",

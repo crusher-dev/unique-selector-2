@@ -6,14 +6,34 @@ import _  from "lodash";
 let rootDocument;
 export const getPnC = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[] => {
   rootDocument = target;
-  const seed2Selectors = generateNDepthSelector(htmlNode, target, 2);
-  const seed3Selectors = generateNDepthSelector(htmlNode, target, 3);
-  const seed4Selectors = generateNDepthSelector(htmlNode, target, 4);
-  const seed5Selectors = generateNDepthSelector(htmlNode, target, 5);
-  const seed6Selectors = generateNDepthSelector(htmlNode, target, 6);
-  const seed7Selectors = generateNDepthSelector(htmlNode, target, 7);
+  let time = Date.now();
+  console.log(0)
+  const seed2Selectors = generateNDepthSelector(htmlNode, target, 2,2);
+  const newTime = Date.now()
+  console.log(newTime-time)
+  time=newTime;
+  const seed3Selectors = generateNDepthSelector(htmlNode, target, 3,3);
+  const newTime = Date.now()
+  console.log(newTime-time)
+  time=newTime;
+  const seed4Selectors = generateNDepthSelector(htmlNode, target, 4,4);
+  const newTime = Date.now()
+  console.log(newTime-time)
+  time=newTime;
+  const seed5Selectors = generateNDepthSelector(htmlNode, target, 5,5);
+  console.log(newTime-time)
+  time=newTime;
+  const seed6Selectors = generateNDepthSelector(htmlNode, target, 6,6);
+  console.log(newTime-time)
+  time=newTime;
+  const seed7Selectors = generateNDepthSelector(htmlNode, target, 7,7);
+  console.log(newTime-time)
+  time=newTime;
+  const seed8Selectors = generateNDepthSelector(htmlNode, target, 8,8);
+  console.log(newTime-time)
+  time=newTime;
 
-  const result =  [...seed2Selectors,...seed3Selectors,...seed4Selectors, ...seed5Selectors, ...seed6Selectors, ...seed7Selectors];
+  const result =  [...seed2Selectors,...seed3Selectors,...seed4Selectors, ...seed5Selectors, ...seed6Selectors, ...seed7Selectors,...seed8Selectors];
 
   return _.uniqBy(result, 'value')
 }
@@ -27,8 +47,8 @@ const generateNDepthSelector = (htmlNode:HTMLElement, target:HTMLElement, seed:n
       root: target,
       seedMinLength: seed,
       optimizedMinLength: optimizationLevel,
-      threshold: 3000,
-      maxNumberOfTries: 10000,
+      threshold: 500,
+      maxNumberOfTries: 1000,
     }
 
     const querySelector = finder(htmlNode, configuration);
