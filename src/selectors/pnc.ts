@@ -42,7 +42,7 @@ const generateNDepthSelector = (htmlNode:HTMLElement, target:HTMLElement, seed:n
   let optimizationLevel = 2;
   const output = []
 
-  while(optimizationLevel<=optimized){
+  while(optimizationLevel<=2){
     const configuration = {
       root: target,
       seedMinLength: seed,
