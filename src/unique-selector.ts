@@ -33,23 +33,20 @@ class UniqueSelector {
     const getDataAttributesSelector = getDataAttribute(element, this._configuration.root)
     const geAttributesSelector = getAttribute(element, this._configuration.root)
     const genPnCSelectors = getPnC(element, this._configuration.root)
-    console.log('This is the element to check', element, idSelector)
 
-    let mostUniqueSelector = null
+    const selectors = []
 
-    if (idSelector.length > 1) {
-      mostUniqueSelector = idSelector[0]
-    } else if (getDataAttributesSelector && getDataAttributesSelector.length > 0) {
-      mostUniqueSelector = getDataAttributesSelector[0]
-    } else if (geAttributesSelector && geAttributesSelector.length > 0) {
-      mostUniqueSelector = geAttributesSelector[0]
-    } else if (genPnCSelectors && genPnCSelectors.length > 0) {
-      mostUniqueSelector = genPnCSelectors[0]
-    }
+    selectors.push(...idSelector, ...getDataAttributesSelector, ...geAttributesSelector)
+    selectors.sort((a, b) => Number(b.uniquenessScore) - Number(a.uniquenessScore))
+
+    selectors.push(...(genPnCSelectors ? genPnCSelectors : []))
+
+    console.log('These are the selectors', selectors)
+    console.log(selectors)
 
     // @ts-ignore
     return {
-      mostUniqueSelector: idSelector,
+      mostUniqueSelector: selectors[0],
       list: [
         ...idSelector,
         ...getDataAttributesSelector,
