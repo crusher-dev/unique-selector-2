@@ -1,74 +1,86 @@
 // @ts-nocheck
 import { SelectorData } from '../interface/result'
 import { SELECTOR_TYPE } from '../constants'
-import _  from "lodash";
+import _ from 'lodash'
 
-let rootDocument;
-export const getPnC = (htmlNode:HTMLElement, target:HTMLElement):SelectorData[] => {
-  rootDocument = target;
-  let time = Date.now();
+let rootDocument
+export const getPnC = (htmlNode: HTMLElement, target: HTMLElement): SelectorData[] => {
+  rootDocument = target
+  let time = Date.now()
   console.log(0)
-  const seed2Selectors = generateNDepthSelector(htmlNode, target, 2,2);
+  const seed2Selectors = generateNDepthSelector(htmlNode, target, 2, 2)
   const newTime = Date.now()
-  console.log(newTime-time)
-  time=newTime;
-  const seed3Selectors = generateNDepthSelector(htmlNode, target, 3,3);
+  console.log(newTime - time)
+  time = newTime
+  const seed3Selectors = generateNDepthSelector(htmlNode, target, 3, 3)
   const newTime = Date.now()
-  console.log(newTime-time)
-  time=newTime;
-  const seed4Selectors = generateNDepthSelector(htmlNode, target, 4,4);
+  console.log(newTime - time)
+  time = newTime
+  const seed4Selectors = generateNDepthSelector(htmlNode, target, 4, 4)
   const newTime = Date.now()
-  console.log(newTime-time)
-  time=newTime;
-  const seed5Selectors = generateNDepthSelector(htmlNode, target, 5,5);
-  console.log(newTime-time)
-  time=newTime;
-  const seed6Selectors = generateNDepthSelector(htmlNode, target, 6,6);
-  console.log(newTime-time)
-  time=newTime;
-  const seed7Selectors = generateNDepthSelector(htmlNode, target, 7,7);
-  console.log(newTime-time)
-  time=newTime;
-  const seed8Selectors = generateNDepthSelector(htmlNode, target, 8,8);
-  console.log(newTime-time)
-  time=newTime;
+  console.log(newTime - time)
+  time = newTime
+  const seed5Selectors = generateNDepthSelector(htmlNode, target, 5, 5)
+  console.log(newTime - time)
+  time = newTime
+  const seed6Selectors = generateNDepthSelector(htmlNode, target, 6, 6)
+  console.log(newTime - time)
+  time = newTime
+  const seed7Selectors = generateNDepthSelector(htmlNode, target, 7, 7)
+  console.log(newTime - time)
+  time = newTime
+  const seed8Selectors = generateNDepthSelector(htmlNode, target, 8, 8)
+  console.log(newTime - time)
+  time = newTime
 
-  const result =  [...seed2Selectors,...seed3Selectors,...seed4Selectors, ...seed5Selectors, ...seed6Selectors, ...seed7Selectors,...seed8Selectors];
+  const result = [
+    ...seed2Selectors,
+    ...seed3Selectors,
+    ...seed4Selectors,
+    ...seed5Selectors,
+    ...seed6Selectors,
+    ...seed7Selectors,
+    ...seed8Selectors
+  ]
 
   return _.uniqBy(result, 'value')
 }
 
-const generateNDepthSelector = (htmlNode:HTMLElement, target:HTMLElement, seed:number=5, optimized:number= 5) =>{
-  let optimizationLevel = 2;
+const generateNDepthSelector = (
+  htmlNode: HTMLElement,
+  target: HTMLElement,
+  seed: number = 5,
+  optimized: number = 5
+) => {
+  let optimizationLevel = 2
   const output = []
 
-  while(optimizationLevel<=2){
+  while (optimizationLevel <= 2) {
     const configuration = {
       root: target,
       seedMinLength: seed,
       optimizedMinLength: optimizationLevel,
       threshold: 500,
-      maxNumberOfTries: 1000,
+      maxNumberOfTries: 1000
     }
 
-    const querySelector = finder(htmlNode, configuration);
+    const querySelector = finder(htmlNode, configuration)
+    if (!querySelector) break
     const resultObject = {
       type: SELECTOR_TYPE.PNC,
       value: querySelector,
       uniquenessScore: 1,
-      meta:{
+      meta: {
         seedLength: seed,
-        optimized: optimizationLevel++,
+        optimized: optimizationLevel++
       }
     }
     output.push(resultObject)
   }
-  return output;
+  return output
 }
 
-
 // Source code based off https://github.com/antonmedv/finder/blob/master/finder.ts
-
 
 type Node = {
   name: string
@@ -80,8 +92,8 @@ type Path = Node[]
 
 enum Limit {
   All,
-    Two,
-    One,
+  Two,
+  One
 }
 
 export type Options = {
@@ -103,8 +115,8 @@ export function finder(input: Element, options?: Partial<Options>) {
     throw new Error(`Can't generate CSS selector for non-element node type.`)
   }
 
-  if ("html" === input.tagName.toLowerCase()) {
-    return "html"
+  if ('html' === input.tagName.toLowerCase()) {
+    return 'html'
   }
 
   const defaults: Options = {
@@ -116,15 +128,14 @@ export function finder(input: Element, options?: Partial<Options>) {
     seedMinLength: 1,
     optimizedMinLength: 2,
     threshold: 1000,
-    maxNumberOfTries: 10000,
+    maxNumberOfTries: 10000
   }
 
-  config = {...defaults, ...options}
+  config = { ...defaults, ...options }
 
-  let path =
-    bottomUpSearch(input, Limit.All, () =>
-      bottomUpSearch(input, Limit.Two, () =>
-        bottomUpSearch(input, Limit.One)))
+  let path = bottomUpSearch(input, Limit.All, () =>
+    bottomUpSearch(input, Limit.Two, () => bottomUpSearch(input, Limit.One))
+  )
 
   if (path) {
     const optimized = sort(optimize(path, input))
@@ -135,7 +146,7 @@ export function finder(input: Element, options?: Partial<Options>) {
 
     return selector(path)
   } else {
-    throw new Error(`Selector was not found.`)
+    return null
   }
 }
 
@@ -156,7 +167,10 @@ function bottomUpSearch(input: Element, limit: Limit, fallback?: () => Path | nu
   let i = 0
 
   while (current && current !== config.root.parentElement) {
-    let level: Node[] = maybe(id(current)) || maybe(...attr(current)) || maybe(...classNames(current)) || maybe(tagName(current)) || [any()]
+    let level: Node[] = maybe(id(current)) ||
+      maybe(...attr(current)) ||
+      maybe(...classNames(current)) ||
+      maybe(tagName(current)) || [any()]
 
     const nth = index(current)
 
@@ -171,7 +185,7 @@ function bottomUpSearch(input: Element, limit: Limit, fallback?: () => Path | nu
         level = level.concat(level.filter(dispensableNth).map(node => nthChild(node, nth)))
       }
     } else if (limit === Limit.One) {
-      const [node] = level = level.slice(0, 1)
+      const [node] = (level = level.slice(0, 1))
 
       if (nth && dispensableNth(node)) {
         level = [nthChild(node, nth)]
@@ -251,33 +265,36 @@ function unique(path: Path) {
 }
 
 function id(input: Element): Node | null {
-  const elementId = input.getAttribute("id")
+  const elementId = input.getAttribute('id')
   if (elementId && config.idName(elementId)) {
     return {
-      name: "#" + cssesc(elementId, {isIdentifier: true}),
-      penalty: 0,
+      name: '#' + cssesc(elementId, { isIdentifier: true }),
+      penalty: 0
     }
   }
   return null
 }
 
 function attr(input: Element): Node[] {
-  const attrs = Array.from(input.attributes).filter((attr) => config.attr(attr.name, attr.value))
+  const attrs = Array.from(input.attributes).filter(attr => config.attr(attr.name, attr.value))
 
-  return attrs.map((attr): Node => ({
-    name: "[" + cssesc(attr.name, {isIdentifier: true}) + "=\"" + cssesc(attr.value) + "\"]",
-    penalty: 0.5
-  }))
+  return attrs.map(
+    (attr): Node => ({
+      name: '[' + cssesc(attr.name, { isIdentifier: true }) + '="' + cssesc(attr.value) + '"]',
+      penalty: 0.5
+    })
+  )
 }
 
 function classNames(input: Element): Node[] {
-  const names = Array.from(input.classList)
-    .filter(config.className)
+  const names = Array.from(input.classList).filter(config.className)
 
-  return names.map((name): Node => ({
-    name: "." + cssesc(name, {isIdentifier: true}),
-    penalty: 1
-  }))
+  return names.map(
+    (name): Node => ({
+      name: '.' + cssesc(name, { isIdentifier: true }),
+      penalty: 1
+    })
+  )
 }
 
 function tagName(input: Element): Node | null {
@@ -293,7 +310,7 @@ function tagName(input: Element): Node | null {
 
 function any(): Node {
   return {
-    name: "*",
+    name: '*',
     penalty: 3
   }
 }
@@ -333,7 +350,7 @@ function nthChild(node: Node, i: number): Node {
 }
 
 function dispensableNth(node: Node) {
-  return node.name !== "html" && !node.name.startsWith("#")
+  return node.name !== 'html' && !node.name.startsWith('#')
 }
 
 function maybe(...level: (Node | null)[]): Node[] | null {
@@ -367,29 +384,33 @@ type Scope = {
   visited: Map<string, boolean>
 }
 
-function* optimize(path: Path, input: Element, scope: Scope = {
-  counter: 0,
-  visited: new Map<string, boolean>()
-}): Generator<Node[]> {
+function* optimize(
+  path: Path,
+  input: Element,
+  scope: Scope = {
+    counter: 0,
+    visited: new Map<string, boolean>()
+  }
+): Generator<Node[]> {
   if (path.length > 2 && path.length > config.optimizedMinLength) {
-  for (let i = 1; i < path.length - 1; i++) {
-    if (scope.counter > config.maxNumberOfTries) {
-      return // Okay At least I tried!
-    }
-    scope.counter += 1
-    const newPath = [...path]
-    newPath.splice(i, 1)
-    const newPathKey = selector(newPath)
-    if (scope.visited.has(newPathKey)) {
-      return
-    }
-    if (unique(newPath) && same(newPath, input)) {
-      yield newPath
-      scope.visited.set(newPathKey, true)
-      yield* optimize(newPath, input, scope)
+    for (let i = 1; i < path.length - 1; i++) {
+      if (scope.counter > config.maxNumberOfTries) {
+        return // Okay At least I tried!
+      }
+      scope.counter += 1
+      const newPath = [...path]
+      newPath.splice(i, 1)
+      const newPathKey = selector(newPath)
+      if (scope.visited.has(newPathKey)) {
+        return
+      }
+      if (unique(newPath) && same(newPath, input)) {
+        yield newPath
+        scope.visited.set(newPathKey, true)
+        yield* optimize(newPath, input, scope)
+      }
     }
   }
-}
 }
 
 function same(path: Path, input: Element) {
@@ -401,23 +422,23 @@ const regexSingleEscape = /[ -,\.\/:-@\[\]\^`\{-~]/
 const regexExcessiveSpaces = /(^|\\+)?(\\[A-F0-9]{1,6})\x20(?![a-fA-F0-9\x20])/g
 
 const defaultOptions = {
-  "escapeEverything": false,
-  "isIdentifier": false,
-  "quotes": "single",
-  "wrap": false
+  escapeEverything: false,
+  isIdentifier: false,
+  quotes: 'single',
+  wrap: false
 }
 
 // tslint:disable-next-line:variable-name
 function cssesc(string: string, opt: Partial<typeof defaultOptions> = {}) {
-  const options = {...defaultOptions, ...opt}
-  if (options.quotes !== "single" && options.quotes !== "double") {
-    options.quotes = "single"
+  const options = { ...defaultOptions, ...opt }
+  if (options.quotes !== 'single' && options.quotes !== 'double') {
+    options.quotes = 'single'
   }
-  const quote = options.quotes === "double" ? "\"" : "'"
+  const quote = options.quotes === 'double' ? '"' : "'"
   const isIdentifier = options.isIdentifier
 
   const firstChar = string.charAt(0)
-  let output = ""
+  let output = ''
   let counter = 0
   const length = string.length
   while (counter < length) {
@@ -425,31 +446,37 @@ function cssesc(string: string, opt: Partial<typeof defaultOptions> = {}) {
     let codePoint = character.charCodeAt(0)
     let value: string | undefined = void 0
     // If it’s not a printable ASCII character…
-    if (codePoint < 0x20 || codePoint > 0x7E) {
-      if (codePoint >= 0xD800 && codePoint <= 0xDBFF && counter < length) {
+    if (codePoint < 0x20 || codePoint > 0x7e) {
+      if (codePoint >= 0xd800 && codePoint <= 0xdbff && counter < length) {
         // It’s a high surrogate, and there is a next character.
         const extra = string.charCodeAt(counter++)
-        if ((extra & 0xFC00) === 0xDC00) {
+        if ((extra & 0xfc00) === 0xdc00) {
           // next character is low surrogate
-          codePoint = ((codePoint & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000
+          codePoint = ((codePoint & 0x3ff) << 10) + (extra & 0x3ff) + 0x10000
         } else {
           // It’s an unmatched surrogate; only append this code unit, in case
           // the next code unit is the high surrogate of a surrogate pair.
           counter--
         }
       }
-      value = "\\" + codePoint.toString(16).toUpperCase() + " "
+      value = '\\' + codePoint.toString(16).toUpperCase() + ' '
     } else {
       if (options.escapeEverything) {
         if (regexAnySingleEscape.test(character)) {
-          value = "\\" + character
+          value = '\\' + character
         } else {
-          value = "\\" + codePoint.toString(16).toUpperCase() + " "
+          value = '\\' + codePoint.toString(16).toUpperCase() + ' '
         }
       } else if (/[\t\n\f\r\x0B]/.test(character)) {
-        value = "\\" + codePoint.toString(16).toUpperCase() + " "
-      } else if (character === "\\" || !isIdentifier && (character === "\"" && quote === character || character === "'" && quote === character) || isIdentifier && regexSingleEscape.test(character)) {
-        value = "\\" + character
+        value = '\\' + codePoint.toString(16).toUpperCase() + ' '
+      } else if (
+        character === '\\' ||
+        (!isIdentifier &&
+          ((character === '"' && quote === character) ||
+            (character === "'" && quote === character))) ||
+        (isIdentifier && regexSingleEscape.test(character))
+      ) {
+        value = '\\' + character
       } else {
         value = character
       }
@@ -459,22 +486,22 @@ function cssesc(string: string, opt: Partial<typeof defaultOptions> = {}) {
 
   if (isIdentifier) {
     if (/^-[-\d]/.test(output)) {
-      output = "\\-" + output.slice(1)
+      output = '\\-' + output.slice(1)
     } else if (/\d/.test(firstChar)) {
-      output = "\\3" + firstChar + " " + output.slice(1)
+      output = '\\3' + firstChar + ' ' + output.slice(1)
     }
   }
 
   // Remove spaces after `\HEX` escapes that are not followed by a hex digit,
   // since they’re redundant. Note that this is only possible if the escape
   // sequence isn’t preceded by an odd number of backslashes.
-  output = output.replace(regexExcessiveSpaces, function ($0, $1, $2) {
+  output = output.replace(regexExcessiveSpaces, function($0, $1, $2) {
     if ($1 && $1.length % 2) {
       // It’s not safe to remove the space, so don’t.
       return $0
     }
     // Strip the space.
-    return ($1 || "") + $2
+    return ($1 || '') + $2
   })
 
   if (!isIdentifier && options.wrap) {
